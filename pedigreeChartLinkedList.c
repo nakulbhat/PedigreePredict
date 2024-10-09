@@ -7,6 +7,7 @@ typedef struct Person
     int id;
     struct Relation* relationOfOrigin;
     int characteristics[10];
+    struct Person* prevSibling;
     struct Person* nextSibling;
     struct Relation* firstRelation;
 }Person;
