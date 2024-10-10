@@ -3,7 +3,8 @@ typedef enum gender {MALE, FEMALE} gender;
 
 typedef struct Person
 {
-    gender gen;
+    gender gender;
+    char name[25];
     int id;
     struct Relation* relationOfOrigin;
     int characteristics[10];
@@ -20,5 +21,23 @@ typedef struct Relation
     int characteristics[20];
     struct Relation* p1nextRelation;
     struct Relation* p2nextRelation;
-};
+}Relation;
 
+int generateID(){
+    static int count = 0;
+    count++;
+    return count;
+}
+
+Person* createPerson(Relation* relOfOrg, gender gender, char name[] ,int characteristics[]){
+    Person* newPerson = (Person*) malloc(sizeof(Person));
+    newPerson->id = generateID();
+}
+
+void addSibling(Relation* relOfOrg, gender gender, char name[] ,int characteristics[]){
+
+}
+
+int main(){
+    return 0;
+}
