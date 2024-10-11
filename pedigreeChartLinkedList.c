@@ -91,7 +91,7 @@ void addSibling(Relation *relOfOrg, gender gen, char name[], int characteristics
     {
         while (kid->nextSibling)
             kid = kid->nextSibling;
-
+        newPerson->prevSibling = kid;
         kid->nextSibling = newPerson;
     }
 }
