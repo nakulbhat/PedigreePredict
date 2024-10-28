@@ -12,5 +12,6 @@ This is a project to implement a linked-list based data structure and algorithma
   -  [x] createRelation
   -  [x] addRelation
   -  [ ] genotypeArray
-  -  [ ] displayChildren
-  -  [ ] displaySiblings
+  -  [x] displayChildren
+  -  [x] displaySiblings
+  -  [ ] displayCousins

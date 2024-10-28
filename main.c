@@ -5,12 +5,17 @@
 #include "structs.c"
 #include "personFunctions.c"
 #include "relationFunctions.c"
+#include "displayFunctions.c"
 
 Person *createPerson(Relation *relOfOrg, gender gender, char name[], int characteristics[]);
 void addSibling(Relation *relOfOrg, gender gen, char name[], int characteristics[]);
-Relation *createRelation(Person *male, Person *female);
-void addRelation(Person *male, Person *female);
+
 void displayPerson(Person *person);
+void displaySiblings(Person *person);
+void displayChildren(Person *person);
+// TODO: void displayCousins(Person *person);
+
+void addRelation(Person *male, Person *female);
 
 int main()
 {
@@ -29,6 +34,7 @@ int main()
     displayPerson(male);
     displayPerson(female);
     displayPerson(male->firstRelation->firstChild);
-    displayPerson(male->firstRelation->firstChild->nextSibling);
+    displayChildren(male);
+    displaySiblings(male->firstRelation->firstChild);
     return 0;
 }
