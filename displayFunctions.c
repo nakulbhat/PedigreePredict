@@ -11,7 +11,6 @@
 #include "relationFunctions.c"
 #endif
 
-
 void displayPerson(Person *person)
 {
     if (person == NULL)
@@ -34,7 +33,7 @@ void displayPerson(Person *person)
     {
         char *father = person->relationOfOrigin->male->name;
         char *mother = person->relationOfOrigin->female->name;
-        printf("Relation of Origin: Exists; Father: %s    Mother: %s\n", father, mother);
+        printf("Relation of Origin: Exists;\n Father: %s    Mother: %s\n", father, mother);
     }
     else
     {
@@ -116,9 +115,40 @@ void displayChildren(Person *person)
 }
 
 void displayCousins(Person *person)
-{ // TODO
+{
+    printf("****Cousins of %s****", person->name);
     Person *mother = person->relationOfOrigin->female;
+    Person *motherSiblings = NULL;
+    Person *fatherSiblings = NULL;
+    if (mother->relationOfOrigin)
+        motherSiblings = mother->relationOfOrigin->firstChild;
     Person *father = person->relationOfOrigin->male;
+    if (father->relationOfOrigin)
+        fatherSiblings = father->relationOfOrigin->firstChild;
 
-    Person *motherSiblings = mother->relationOfOrigin->firstChild;
+    while (motherSiblings)
+    {
+        if (motherSiblings != mother)
+        {
+            displayChildren(motherSiblings);
+        }
+        else
+        {
+            printf("Traced to mom");
+        }
+        motherSiblings = motherSiblings->nextSibling;
+    }
+
+    while (fatherSiblings)
+    {
+        if (fatherSiblings != father)
+        {
+            displayChildren(fatherSiblings);
+        }
+        else
+        {
+            printf("Traced to dad");
+        }
+        fatherSiblings = fatherSiblings->nextSibling;
+    }
 }

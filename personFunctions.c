@@ -29,7 +29,7 @@ Person *createPerson(Relation *relOfOrg, gender gender, char name[], int charact
     return newPerson;
 }
 
-void addSibling(Relation *relOfOrg, gender gen, char name[], int characteristics[])
+Person* addChild(Relation *relOfOrg, gender gen, char name[], int characteristics[])
 {
     Person *newPerson = createPerson(relOfOrg, gen, name, characteristics);
 
@@ -45,4 +45,5 @@ void addSibling(Relation *relOfOrg, gender gen, char name[], int characteristics
         newPerson->prevSibling = kid;
         kid->nextSibling = newPerson;
     }
+    return newPerson;
 }

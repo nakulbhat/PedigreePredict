@@ -19,7 +19,7 @@ Relation *createRelation(Person *male, Person *female)
     return newRelation;
 }
 
-void addRelation(Person *male, Person *female)
+Relation* addRelation(Person *male, Person *female)
 {
     Relation *newRelation = createRelation(male, female);
 
@@ -42,4 +42,5 @@ void addRelation(Person *male, Person *female)
     }
     else
         female->firstRelation = newRelation;
+    return newRelation;
 }
