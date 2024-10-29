@@ -18,12 +18,27 @@ int generateID()
     return count;
 }
 
+double *normaliseProbabilities(double *probabilities)
+{
+    double total = 0;
+    for (int i = 0; i < ARRAY_SIZE; i++)
+    {
+        total += probabilities[i];
+    }
+    for (int i = 0; i < ARRAY_SIZE; i++)
+    {
+        probabilities[i] /= total;
+    }
+    return probabilities;
+}
+
 double *calculateProbabilities(double *a, double *b)
 {
     double *probabilities = (double *)malloc(sizeof(double) * ARRAY_SIZE);
     probabilities[0] = ((a[0] * (4 * b[0] + 2 * b[1]) + a[1] * (2 * b[0] + 2 * b[1])) / 4);
     probabilities[1] = ((a[0] * (2 * b[1] + 4 * b[2]) + a[1] * (2 * (b[0] + b[1] + b[2])) + a[2] * (4 * b[0] + 2 * b[1])) / 4);
     probabilities[2] = ((a[1] * (b[1] + 2 * b[2]) + a[2] * (2 * b[1] + 4 * b[2])) / 4);
+
     return probabilities;
 }
 
@@ -38,20 +53,17 @@ Person *createPerson(Relation *relOfOrg, gender gender, char name[])
     if (relOfOrg == NULL)
     {
         newPersonCharacteristics = (double *)malloc(sizeof(double) * ARRAY_SIZE);
-        // for (int i = 0; i < ARRAY_SIZE; i++)
-        // {
-        //     newPersonCharacteristics[i] = 0.333;
-        // }
-
-        // Temporary characteristics
-        newPersonCharacteristics[0] = 0.25;
-        newPersonCharacteristics[1] = 0.5;
-        newPersonCharacteristics[2] = 0.25;
+        for (int i = 0; i < ARRAY_SIZE; i++)
+        {
+            newPersonCharacteristics[i] = 0.333;
+        }
     }
     else
     {
         newPersonCharacteristics = calculateProbabilities(relOfOrg->male->characteristics, relOfOrg->female->characteristics);
     }
+    normaliseProbabilities(newPersonCharacteristics);
+
     memcpy(newPerson->characteristics, newPersonCharacteristics, sizeof(newPerson->characteristics));
     return newPerson;
 }

@@ -96,6 +96,8 @@ int main(){
     displayPerson(cousin6);
     displayPerson(cousin7);
     displayPerson(cousin8);
+
+    
     displayCousins(child1);
 
     return 0;
