@@ -11,6 +11,7 @@
 #include "relationFunctions.c"
 #endif
 
+
 void displayPerson(Person *person)
 {
     if (person == NULL)
