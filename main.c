@@ -20,12 +20,11 @@ void displayCousins(Person *person);
 
 Relation *addRelation(Person *male, Person *female);
 
-int main()
-{
-    int characteristics1[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    int characteristics2[10] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
-    int characteristics3[10] = {1, 3, 5, 7, 9, 2, 4, 6, 8, 10};
-    int characteristics4[10] = {10, 8, 6, 4, 2, 9, 7, 5, 3, 1};
+int main(){
+int characteristics1[3] = {1, 2, 3};
+int characteristics2[3] = {10, 9, 8};
+int characteristics3[3] = {1, 3, 5};
+int characteristics4[3] = {10, 8, 6};
 
     // Grandparents
     Person *paternalGrandfather = createPerson(NULL, MALE, "Paternal Grandfather", characteristics1);
@@ -103,5 +102,5 @@ int main()
     displayPerson(cousin8);
     displayCousins(child1);
 
-    return 0; return 0;
+    return 0;
 }
