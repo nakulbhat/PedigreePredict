@@ -2,9 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifndef STRUCTS_INCLUDED
 #include "structs.c"
+#endif
+#ifndef PERSON_FUNCTIONS_INCLUDED
 #include "personFunctions.c"
+#endif
+#ifndef RELATION_FUNCTIONS_INCLUDED
 #include "relationFunctions.c"
+#endif
 #include "displayFunctions.c"
 
 Person *createPerson(Relation *relOfOrg, gender gender, char name[], int characteristics[]);

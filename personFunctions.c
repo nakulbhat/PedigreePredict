@@ -1,4 +1,16 @@
 
+#define PERSON_FUNCTIONS_INCLUDED 1
+
+#ifndef STRUCTS_INCLUDED
+#include "structs.c"
+#endif
+#ifndef PERSON_FUNCTIONS_INCLUDED
+#include "personFunctions.c"
+#endif
+#ifndef RELATION_FUNCTIONS_INCLUDED
+#include "relationFunctions.c"
+#endif
+
 int generateID()
 {
     static int count = 0;

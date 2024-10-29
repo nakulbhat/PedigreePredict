@@ -1,3 +1,5 @@
+
+#define STRUCTS_INCLUDED 1
 #define MAX_NAME_LENGTH 25
 
 typedef enum gender
