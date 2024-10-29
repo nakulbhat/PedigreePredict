@@ -19,7 +19,7 @@ typedef struct Person
     char name[MAX_NAME_LENGTH];
     int id;
     struct Relation *relationOfOrigin;
-    int characteristics[ARRAY_SIZE];
+    double characteristics[ARRAY_SIZE];
     struct Person *prevSibling;
     struct Person *nextSibling;
     struct Relation *firstRelation;

@@ -25,7 +25,7 @@ void displayPerson(Person *person)
     printf("Characteristics: ");
     for (int i = 0; i < 3; i++)
     {
-        printf("%d ", person->characteristics[i]);
+        printf("%2f ", person->characteristics[i]);
     }
     printf("\n");
 
