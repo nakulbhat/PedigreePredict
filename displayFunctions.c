@@ -23,9 +23,9 @@ void displayPerson(Person *person)
     printf("Name: %s\n", person->name);
     printf("Gender: %s\n", person->gender == MALE ? "Male" : "Female");
     printf("Characteristics: ");
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 3; i++)
     {
-        printf("%d ", person->characteristics[i]);
+        printf("%2f ", person->characteristics[i]);
     }
     printf("\n");
 

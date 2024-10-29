@@ -18,20 +18,59 @@ int generateID()
     return count;
 }
 
-Person *createPerson(Relation *relOfOrg, gender gender, char name[], int characteristics[])
+double *normaliseProbabilities(double *probabilities)
+{
+    double total = 0;
+    for (int i = 0; i < ARRAY_SIZE; i++)
+    {
+        total += probabilities[i];
+    }
+    for (int i = 0; i < ARRAY_SIZE; i++)
+    {
+        probabilities[i] /= total;
+    }
+    return probabilities;
+}
+
+double *calculateProbabilities(double *a, double *b)
+{
+    double *probabilities = (double *)malloc(sizeof(double) * ARRAY_SIZE);
+    probabilities[0] = ((a[0] * (4 * b[0] + 2 * b[1]) + a[1] * (2 * b[0] + 2 * b[1])) / 4);
+    probabilities[1] = ((a[0] * (2 * b[1] + 4 * b[2]) + a[1] * (2 * (b[0] + b[1] + b[2])) + a[2] * (4 * b[0] + 2 * b[1])) / 4);
+    probabilities[2] = ((a[1] * (b[1] + 2 * b[2]) + a[2] * (2 * b[1] + 4 * b[2])) / 4);
+
+    return probabilities;
+}
+
+Person *createPerson(Relation *relOfOrg, gender gender, char name[])
 {
     Person *newPerson = (Person *)malloc(sizeof(Person));
     newPerson->relationOfOrigin = relOfOrg;
     newPerson->id = generateID();
     strcpy(newPerson->name, name);
     newPerson->gender = gender;
-    memcpy(newPerson->characteristics, characteristics, sizeof(newPerson->characteristics));
+    double *newPersonCharacteristics = NULL;
+    if (relOfOrg == NULL)
+    {
+        newPersonCharacteristics = (double *)malloc(sizeof(double) * ARRAY_SIZE);
+        for (int i = 0; i < ARRAY_SIZE; i++)
+        {
+            newPersonCharacteristics[i] = 0.333;
+        }
+    }
+    else
+    {
+        newPersonCharacteristics = calculateProbabilities(relOfOrg->male->characteristics, relOfOrg->female->characteristics);
+    }
+    normaliseProbabilities(newPersonCharacteristics);
+
+    memcpy(newPerson->characteristics, newPersonCharacteristics, sizeof(newPerson->characteristics));
     return newPerson;
 }
 
-Person* addChild(Relation *relOfOrg, gender gen, char name[], int characteristics[])
+Person *addChild(Relation *relOfOrg, gender gen, char name[])
 {
-    Person *newPerson = createPerson(relOfOrg, gen, name, characteristics);
+    Person *newPerson = createPerson(relOfOrg, gen, name);
 
     Person *kid = relOfOrg->firstChild;
 
