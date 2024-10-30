@@ -11,6 +11,9 @@
 #include "relationFunctions.c"
 #endif
 
+#include "functionList.h"
+
+
 Relation *createRelation(Person *male, Person *female)
 {
     Relation *newRelation = (Relation *)malloc(sizeof(Relation));
@@ -43,4 +46,19 @@ Relation* addRelation(Person *male, Person *female)
     else
         female->firstRelation = newRelation;
     return newRelation;
+}
+
+Relation* findRelationById(int fatherid, int motherid)
+{
+    Person* father = findPersonById(fatherid);
+    Person* mother = findPersonById(motherid);
+    Relation* currentRelation = father->firstRelation;
+    while(currentRelation)
+    {
+        if(currentRelation->female == mother)
+            return currentRelation;
+        else
+            currentRelation = currentRelation->maleNextRelation;
+    }
+    return NULL;
 }

@@ -15,21 +15,17 @@
 #include "menu.c"
 #endif
 
-Person *createPerson(Relation *relOfOrg, gender gender, char name[]);
-Person* addChild(Relation *relOfOrg, gender gen, char name[]);
-double *calculateProbabilities(double *a, double *b);
-
-void displayPerson(Person *person);
-void displaySiblings(Person *person);
-void displayChildren(Person *person);
-void displayCousins(Person *person);
-
-Relation *addRelation(Person *male, Person *female);
+#include "functionList.h"
 
 int main(){
+    int id;
     displayPersonList();
     usePredefinedPedigree();
     displayPersonList();
     displayPersonById(15);
+    readPersonAndParents();
+    displayPersonList();
+    scanf("%d", &id);
+    displayPersonById(id);
     return 0;
 }

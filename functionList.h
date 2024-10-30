@@ -1,0 +1,16 @@
+Person *createPerson(Relation *relOfOrg, gender gender, char name[]);
+Person* addChild(Relation *relOfOrg, gender gen, char name[]);
+double *calculateProbabilities(double *a, double *b);
+Person* findPersonById(int id);
+void addPersonToList(Person *person);
+double *normaliseProbabilities(double *probabilities);
+void readPersonAndParents();
+void displayPersonList();
+void displayPersonById(int id);
+void usePredefinedPedigree();
+void displayPerson(Person *person);
+void displaySiblings(Person *person);
+void displayChildren(Person *person);
+void displayCousins(Person *person);
+Relation* findRelationById(int fatherid, int motherid);
+Relation *addRelation(Person *male, Person *female);

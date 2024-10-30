@@ -16,6 +16,9 @@
 #include "menu.c"
 #endif
 
+#include "functionList.h"
+
+
 void usePredefinedPedigree()
 {
     Person *paternalGrandfather = createPerson(NULL, MALE, "Paternal Grandfather");
@@ -71,19 +74,36 @@ void startMenu()
 {
     printf("Enter your choice \n");
     int choice;
-    gender newPersonGender;
-    char newPersonName[MAX_NAME_LENGTH];
-    while (choice)
-    {
+    do{
+        printf("1. Use Predefined Pedigree\n");
+        printf("2. Add Person to Parents\n");
+        printf("3. Display Person\n");
+        printf("4. Display Children\n");
+        printf("5. Display Cousins\n");
+        printf("6. Exit\n");
         scanf("%d", &choice);
         switch (choice)
         {
         case 1:
             usePredefinedPedigree();
             break;
+        case 2:
+            readPersonAndParents();
+            break;
+        // case 3:
+        //     displayPerson();
+        //     break;
+        // case 4:
+        //     displayChildren();
+        //     break;
+        // case 5:
+        //     displayCousins();
+        //     break;
+        case 6:
+            break;
         default:
             printf("Invalid choice\n");
             break;
         }
-    }
+    }while (choice != 6);    
 }

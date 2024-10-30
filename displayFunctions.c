@@ -11,6 +11,9 @@
 #include "relationFunctions.c"
 #endif
 
+#include "functionList.h"
+
+
 void displayPerson(Person *person)
 {
     printf("\n");
@@ -174,11 +177,5 @@ void displayPersonList()
 
 void displayPersonById(int id)
 {
-    personListNode *current = personListHead;
-    while (current != NULL)
-    {
-        if (current->person->id == id)
-            displayPerson(current->person);
-        current = current->next;
-    }
+    displayPerson(findPersonById(id));
 }
