@@ -11,11 +11,30 @@
 #include "relationFunctions.c"
 #endif
 
+personListNode *personListHead = NULL;
+
+
 int generateID()
 {
     static int count = 0;
     count++;
     return count;
+}
+
+void addPersonToList(Person *person) {
+    personListNode *newNode = (personListNode *)malloc(sizeof(personListNode));
+    newNode->person = person;
+    newNode->next = NULL;
+
+    if (personListHead == NULL) {
+        personListHead = newNode;
+    } else {
+        personListNode *current = personListHead;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = newNode;
+    }
 }
 
 double *normaliseProbabilities(double *probabilities)
@@ -65,8 +84,14 @@ Person *createPerson(Relation *relOfOrg, gender gender, char name[])
     normaliseProbabilities(newPersonCharacteristics);
 
     memcpy(newPerson->characteristics, newPersonCharacteristics, sizeof(newPerson->characteristics));
+    addPersonToList(newPerson);
     return newPerson;
 }
+
+
+
+
+
 
 Person *addChild(Relation *relOfOrg, gender gen, char name[])
 {

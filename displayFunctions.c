@@ -152,3 +152,17 @@ void displayCousins(Person *person)
         fatherSiblings = fatherSiblings->nextSibling;
     }
 }
+
+void displayPersonNameAndID(Person *person)
+{
+    printf("ID: %d", person->id);
+    printf("Name: %s\n", person->name);
+}
+
+void displayPersonList() {
+    personListNode *current = personListHead;
+    while (current != NULL) {
+        displayPersonNameAndID(current->person);
+        current = current->next;
+    }
+}
