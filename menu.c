@@ -63,6 +63,8 @@ void usePredefinedPedigree()
     Person *cousin6 = addChild(motherOlderBrotherMarriage, FEMALE, "Cousin6");
     Person *cousin7 = addChild(motherOlderSisterMarriage, MALE, "Cousin7");
     Person *cousin8 = addChild(motherOlderSisterMarriage, FEMALE, "Cousin8");
+
+    printf("**Predefined Pedigree Loaded**\n");
 }
 
 void startMenu()
@@ -71,8 +73,6 @@ void startMenu()
     int choice;
     gender newPersonGender;
     char newPersonName[MAX_NAME_LENGTH];
-    Person *newPerson = NULL;
-    Relation *newRelation = NULL;
     while (choice)
     {
         scanf("%d", &choice);

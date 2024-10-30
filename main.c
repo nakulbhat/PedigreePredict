@@ -27,7 +27,9 @@ void displayCousins(Person *person);
 Relation *addRelation(Person *male, Person *female);
 
 int main(){
+    displayPersonList();
     usePredefinedPedigree();
     displayPersonList();
+    displayPersonById(15);
     return 0;
 }

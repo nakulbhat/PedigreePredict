@@ -13,6 +13,7 @@
 
 void displayPerson(Person *person)
 {
+    printf("\n");
     if (person == NULL)
     {
         printf("Person is NULL\n");
@@ -153,16 +154,31 @@ void displayCousins(Person *person)
     }
 }
 
-void displayPersonNameAndID(Person *person)
+void displayPersonNameAndId(Person *person)
 {
-    printf("ID: %d", person->id);
+    printf("ID: %d\t", person->id);
     printf("Name: %s\n", person->name);
 }
 
-void displayPersonList() {
+void displayPersonList()
+{
     personListNode *current = personListHead;
-    while (current != NULL) {
-        displayPersonNameAndID(current->person);
+    while (current != NULL)
+    {
+        displayPersonNameAndId(current->person);
+        current = current->next;
+    }
+    if (!personListHead)
+        printf("No persons have been created\n");
+}
+
+void displayPersonById(int id)
+{
+    personListNode *current = personListHead;
+    while (current != NULL)
+    {
+        if (current->person->id == id)
+            displayPerson(current->person);
         current = current->next;
     }
 }
