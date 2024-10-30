@@ -22,9 +22,13 @@ int main(){
     displayPersonList();
     usePredefinedPedigree();
     displayPersonList();
-    displayPersonById(15);
-    readPersonAndParents();
-    displayPersonList();
+    //displayPersonById(15);
+    //readPersonAndParents();
+    //displayPersonList();
+    fflush(stdin);
+    scanf("%d", &id);
+    displayPersonById(id);
+    fflush(stdin);
     scanf("%d", &id);
     displayPersonById(id);
     return 0;
