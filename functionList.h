@@ -5,9 +5,9 @@ Person* findPersonById(int id);
 void addPersonToList(Person *person);
 double *normaliseProbabilities(double *probabilities);
 double *calculateProbabilities(double *a, double *b);
-double *getProbabilities(Relation *relOfOrg);
-Person *createPerson(Relation *relOfOrg, gender gender, char name[]);
-Person* addChild(Relation *relOfOrg, gender gen, char name[]);
+double *getProbabilities(Relation *relOfOrg, int mode);
+Person *createPerson(Relation *relOfOrg, gender gender, char name[], int characteristicsMode);
+Person *addChild(Relation *relOfOrg, gender gen, char name[], int bypassCharacReading);
 void readPersonAndParents();
 
 //relationFunctions.c

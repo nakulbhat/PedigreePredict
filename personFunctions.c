@@ -81,13 +81,16 @@ double *calculateProbabilities(double *a, double *b)
     return probabilities;
 }
 
-double *getProbabilities(Relation *relOfOrg)
+double *getProbabilities(Relation *relOfOrg, int bypassCharacReading)
 {
-    printf("Do you want to enter characteristics of the person?\n");
-    printf("1. Yes\n");
-    printf("2. No\n");
-    int choice;
-    scanf("%d", &choice);
+    int choice = 0;
+    if (bypassCharacReading == 0)
+    {
+        printf("Do you want to enter characteristics of the person?\n");
+        printf("1. Yes\n");
+        printf("2. No\n");
+        scanf("%d", &choice);
+    }
     if (choice == 1)
     {
         double *probabilities = (double *)malloc(sizeof(double) * ARRAY_SIZE);
@@ -114,22 +117,22 @@ double *getProbabilities(Relation *relOfOrg)
     }
 }
 
-Person *createPerson(Relation *relOfOrg, gender gender, char name[])
+Person *createPerson(Relation *relOfOrg, gender gender, char name[], int bypassCharacReading)
 {
     Person *newPerson = (Person *)malloc(sizeof(Person));
     newPerson->relationOfOrigin = relOfOrg;
     newPerson->id = generateID();
     strcpy(newPerson->name, name);
     newPerson->gender = gender;
-    double *newPersonCharacteristics = getProbabilities(relOfOrg);
+    double *newPersonCharacteristics = getProbabilities(relOfOrg, bypassCharacReading);
     memcpy(newPerson->characteristics, newPersonCharacteristics, sizeof(newPerson->characteristics));
     addPersonToList(newPerson);
     return newPerson;
 }
 
-Person *addChild(Relation *relOfOrg, gender gen, char name[])
+Person *addChild(Relation *relOfOrg, gender gen, char name[], int bypassCharacReading)
 {
-    Person *newPerson = createPerson(relOfOrg, gen, name);
+    Person *newPerson = createPerson(relOfOrg, gen, name, bypassCharacReading);
 
     Person *kid = relOfOrg->firstChild;
 
@@ -145,7 +148,6 @@ Person *addChild(Relation *relOfOrg, gender gen, char name[])
     }
     return newPerson;
 }
-
 
 void readPersonAndParents()
 {
@@ -182,5 +184,5 @@ void readPersonAndParents()
     {
         marriage = addRelation(father, mother);
     }
-    addChild(marriage, gen == 1 ? MALE : FEMALE, name);
+    addChild(marriage, gen == 1 ? MALE : FEMALE, name, 0);
 }
