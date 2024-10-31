@@ -157,7 +157,7 @@ void displayCousins(Person *person)
     }
 }
 
-void displayPersonNameAndId(Person *person)
+void displayPersonBrief(Person *person)
 {
     printf("ID: %d\t", person->id);
     printf("Name: %s\n", person->name);
@@ -168,7 +168,7 @@ void displayPersonList()
     personListNode *current = personListHead;
     while (current != NULL)
     {
-        displayPersonNameAndId(current->person);
+        displayPersonBrief(current->person);
         current = current->next;
     }
     if (!personListHead)
