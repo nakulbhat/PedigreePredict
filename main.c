@@ -18,18 +18,6 @@
 #include "functionList.h"
 
 int main(){
-    int id;
-    displayPersonList();
-    usePredefinedPedigree();
-    displayPersonList();
-    //displayPersonById(15);
-    //readPersonAndParents();
-    //displayPersonList();
-    fflush(stdin);
-    scanf("%d", &id);
-    displayPersonById(id);
-    fflush(stdin);
-    scanf("%d", &id);
-    displayPersonById(id);
+    startMenu();
     return 0;
 }

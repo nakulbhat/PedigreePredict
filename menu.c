@@ -72,15 +72,18 @@ void usePredefinedPedigree()
 
 void startMenu()
 {
-    printf("Enter your choice \n");
-    int choice;
+    printf("Welcome to the Pedigree Program\n");
+    int choice, personID;
     do{
+        printf("\n\n****Menu*****\n");
+        printf("Enter your choice \n");
         printf("1. Use Predefined Pedigree\n");
         printf("2. Add Person to Parents\n");
         printf("3. Display Person\n");
         printf("4. Display Children\n");
         printf("5. Display Cousins\n");
-        printf("6. Exit\n");
+        printf("6. Display All Persons\n");
+        printf("7. Exit\n");
         scanf("%d", &choice);
         switch (choice)
         {
@@ -90,20 +93,30 @@ void startMenu()
         case 2:
             readPersonAndParents();
             break;
-        // case 3:
-        //     displayPerson();
-        //     break;
-        // case 4:
-        //     displayChildren();
-        //     break;
-        // case 5:
-        //     displayCousins();
-        //     break;
+        case 3:
+            printf("Enter the id of the person to display\n");
+            scanf("%d", &personID);
+            displayPerson(findPersonById(personID));
+            break;
+        case 4:
+            printf("Enter the id of the person to display\n");
+            scanf("%d", &personID);
+            displayChildren(findPersonById(personID));
+            break;
+        case 5:
+            printf("Enter the id of the person to display\n");
+            scanf("%d", &personID);
+            displayCousins(findPersonById(personID));
+            break;
         case 6:
+            displayPersonList();
+            break;
+        case 7:
+            printf("Exiting\n");
             break;
         default:
             printf("Invalid choice\n");
             break;
         }
-    }while (choice != 6);    
+    }while (choice != 7);    
 }
