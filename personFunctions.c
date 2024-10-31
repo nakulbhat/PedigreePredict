@@ -14,8 +14,6 @@
 
 #include "functionList.h"
 
-
-
 personListNode *personListHead = NULL;
 
 int generateID()
@@ -113,7 +111,7 @@ double *getProbabilities(Relation *relOfOrg)
     else
     {
         return normaliseProbabilities(calculateProbabilities(relOfOrg->male->characteristics, relOfOrg->female->characteristics));
-}
+    }
 }
 
 Person *createPerson(Relation *relOfOrg, gender gender, char name[])
@@ -148,22 +146,35 @@ Person *addChild(Relation *relOfOrg, gender gen, char name[])
     return newPerson;
 }
 
+
 void readPersonAndParents()
 {
+    int mode;
+    printf("Enter mode\n");
+    printf("1. Read from one-line\n");
+    printf("2. Read from user input\n");
+    scanf("%d", &mode);
     char name[MAX_NAME_LENGTH];
-    int gen;
-    printf("Enter name of the person\n");
-    scanf("%s", name);
-    printf("Choose gender\n");
-    printf("1. Male\n");
-    printf("2. Female\n");
-    scanf("%d", &gen);
-    printf("Enter ID of father\n");
-    int fatherID;
-    scanf("%d", &fatherID);
-    printf("Enter ID of mother\n");
-    int motherID;
-    scanf("%d", &motherID);
+    int gen, fatherID, motherID;
+    if (mode == 1)
+    {
+        printf("Enter Details of Patient in one-line. Use tab to separate entries.");
+        printf("\nName\tisMale\tFatherID\tMotherID\n");
+        scanf("%s\t%d\t%d\t%d", name, &gen, &fatherID, &motherID);
+    }
+    else if (mode == 2)
+    {
+        printf("Enter name of the person\n");
+        scanf("%s", name);
+        printf("Choose gender\n");
+        printf("1. Male\n");
+        printf("2. Female\n");
+        scanf("%d", &gen);
+        printf("Enter ID of father\n");
+        scanf("%d", &fatherID);
+        printf("Enter ID of mother\n");
+        scanf("%d", &motherID);
+    }
     Person *father = findPersonById(fatherID);
     Person *mother = findPersonById(motherID);
     Relation *marriage = findRelationById(fatherID, motherID);
@@ -171,5 +182,5 @@ void readPersonAndParents()
     {
         marriage = addRelation(father, mother);
     }
-    addChild(marriage, gen == 1 ? MALE :FEMALE, name);
+    addChild(marriage, gen == 1 ? MALE : FEMALE, name);
 }
