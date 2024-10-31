@@ -83,6 +83,39 @@ double *calculateProbabilities(double *a, double *b)
     return probabilities;
 }
 
+double *getProbabilities(Relation *relOfOrg)
+{
+    printf("Do you want to enter characteristics of the person?\n");
+    printf("1. Yes\n");
+    printf("2. No\n");
+    int choice;
+    scanf("%d", &choice);
+    if (choice == 1)
+    {
+        double *probabilities = (double *)malloc(sizeof(double) * ARRAY_SIZE);
+        printf("Enter probabilities of the person having the following characteristics\n");
+        for (int i = 0; i < ARRAY_SIZE; i++)
+        {
+            printf("Enter probability of characteristic %d\n", i + 1);
+            scanf("%lf", &probabilities[i]);
+        }
+        return normaliseProbabilities(probabilities);
+    }
+    else if (relOfOrg == NULL)
+    {
+        double *probabilities = (double *)malloc(sizeof(double) * ARRAY_SIZE);
+        for (int i = 0; i < ARRAY_SIZE; i++)
+        {
+            probabilities[i] = 0.333;
+        }
+        return normaliseProbabilities(probabilities);
+    }
+    else
+    {
+        return normaliseProbabilities(calculateProbabilities(relOfOrg->male->characteristics, relOfOrg->female->characteristics));
+}
+}
+
 Person *createPerson(Relation *relOfOrg, gender gender, char name[])
 {
     Person *newPerson = (Person *)malloc(sizeof(Person));
@@ -90,21 +123,7 @@ Person *createPerson(Relation *relOfOrg, gender gender, char name[])
     newPerson->id = generateID();
     strcpy(newPerson->name, name);
     newPerson->gender = gender;
-    double *newPersonCharacteristics = NULL;
-    if (relOfOrg == NULL)
-    {
-        newPersonCharacteristics = (double *)malloc(sizeof(double) * ARRAY_SIZE);
-        for (int i = 0; i < ARRAY_SIZE; i++)
-        {
-            newPersonCharacteristics[i] = 0.333;
-        }
-    }
-    else
-    {
-        newPersonCharacteristics = calculateProbabilities(relOfOrg->male->characteristics, relOfOrg->female->characteristics);
-    }
-    normaliseProbabilities(newPersonCharacteristics);
-
+    double *newPersonCharacteristics = getProbabilities(relOfOrg);
     memcpy(newPerson->characteristics, newPersonCharacteristics, sizeof(newPerson->characteristics));
     addPersonToList(newPerson);
     return newPerson;
@@ -148,5 +167,9 @@ void readPersonAndParents()
     Person *father = findPersonById(fatherID);
     Person *mother = findPersonById(motherID);
     Relation *marriage = findRelationById(fatherID, motherID);
+    if (marriage == NULL)
+    {
+        marriage = addRelation(father, mother);
+    }
     addChild(marriage, gen == 1 ? MALE :FEMALE, name);
 }
