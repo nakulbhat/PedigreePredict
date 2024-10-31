@@ -34,3 +34,9 @@ typedef struct Relation
     struct Relation *maleNextRelation;
     struct Relation *femaleNextRelation;
 } Relation;
+
+typedef struct personListNode
+{
+    struct Person *person;
+    struct personListNode *next;
+} personListNode;

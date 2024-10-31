@@ -1,4 +1,5 @@
 
+
 #define PERSON_FUNCTIONS_INCLUDED 1
 
 #ifndef STRUCTS_INCLUDED
@@ -11,11 +12,51 @@
 #include "relationFunctions.c"
 #endif
 
+#include "functionList.h"
+
+
+
+personListNode *personListHead = NULL;
+
 int generateID()
 {
     static int count = 0;
     count++;
     return count;
+}
+
+Person *findPersonById(int id)
+{
+    personListNode *current = personListHead;
+    while (current != NULL)
+    {
+        if (current->person->id == id)
+            return current->person;
+        else
+            current = current->next;
+    }
+    return NULL;
+}
+
+void addPersonToList(Person *person)
+{
+    personListNode *newNode = (personListNode *)malloc(sizeof(personListNode));
+    newNode->person = person;
+    newNode->next = NULL;
+
+    if (personListHead == NULL)
+    {
+        personListHead = newNode;
+    }
+    else
+    {
+        personListNode *current = personListHead;
+        while (current->next != NULL)
+        {
+            current = current->next;
+        }
+        current->next = newNode;
+    }
 }
 
 double *normaliseProbabilities(double *probabilities)
@@ -65,6 +106,7 @@ Person *createPerson(Relation *relOfOrg, gender gender, char name[])
     normaliseProbabilities(newPersonCharacteristics);
 
     memcpy(newPerson->characteristics, newPersonCharacteristics, sizeof(newPerson->characteristics));
+    addPersonToList(newPerson);
     return newPerson;
 }
 
@@ -85,4 +127,26 @@ Person *addChild(Relation *relOfOrg, gender gen, char name[])
         kid->nextSibling = newPerson;
     }
     return newPerson;
+}
+
+void readPersonAndParents()
+{
+    char name[MAX_NAME_LENGTH];
+    int gen;
+    printf("Enter name of the person\n");
+    scanf("%s", name);
+    printf("Choose gender\n");
+    printf("1. Male\n");
+    printf("2. Female\n");
+    scanf("%d", &gen);
+    printf("Enter ID of father\n");
+    int fatherID;
+    scanf("%d", &fatherID);
+    printf("Enter ID of mother\n");
+    int motherID;
+    scanf("%d", &motherID);
+    Person *father = findPersonById(fatherID);
+    Person *mother = findPersonById(motherID);
+    Relation *marriage = findRelationById(fatherID, motherID);
+    addChild(marriage, gen == 1 ? MALE :FEMALE, name);
 }
