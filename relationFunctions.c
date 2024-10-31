@@ -13,7 +13,6 @@
 
 #include "functionList.h"
 
-
 Relation *createRelation(Person *male, Person *female)
 {
     Relation *newRelation = (Relation *)malloc(sizeof(Relation));
@@ -22,7 +21,7 @@ Relation *createRelation(Person *male, Person *female)
     return newRelation;
 }
 
-Relation* addRelation(Person *male, Person *female)
+Relation *addRelation(Person *male, Person *female)
 {
     Relation *newRelation = createRelation(male, female);
 
@@ -48,17 +47,70 @@ Relation* addRelation(Person *male, Person *female)
     return newRelation;
 }
 
-Relation* findRelationById(int fatherid, int motherid)
+Relation *findRelationById(int fatherid, int motherid)
 {
-    Person* father = findPersonById(fatherid);
-    Person* mother = findPersonById(motherid);
-    Relation* currentRelation = father->firstRelation;
-    while(currentRelation)
+    Person *father = findPersonById(fatherid);
+    Person *mother = findPersonById(motherid);
+    Relation *currentRelation = father->firstRelation;
+    while (currentRelation)
     {
-        if(currentRelation->female == mother)
+        if (currentRelation->female == mother)
             return currentRelation;
         else
             currentRelation = currentRelation->maleNextRelation;
     }
     return NULL;
 }
+
+int isSibling(Person *person1, Person *person2)
+{
+    return (person1->relationOfOrigin == person2->relationOfOrigin);
+}
+
+int siblingExists(Person *person)
+{
+    return (person->nextSibling != NULL || person->prevSibling != NULL);
+}
+
+int isChild(Person *parent, Person *child)
+{
+    return (child->relationOfOrigin->male == parent || child->relationOfOrigin->female == parent);
+}
+
+int isCousin(Person *person1, Person *person2)
+{
+    Person *fatherSibling = NULL;
+    Person *motherSibling = NULL;
+    if (siblingExists(person1->relationOfOrigin->male))
+    {
+        fatherSibling = person1->relationOfOrigin->male->relationOfOrigin->firstChild;
+        while (fatherSibling)
+        {
+            if (fatherSibling == person1->relationOfOrigin->male)
+                continue;
+            else
+            {
+                if (isChild(fatherSibling, person2))
+                    return 1;
+            }
+        }
+    }
+    if (siblingExists(person1->relationOfOrigin->female))
+    {
+        motherSibling = person1->relationOfOrigin->female->relationOfOrigin->firstChild;
+        while (motherSibling)
+        {
+            if (motherSibling == person1->relationOfOrigin->female)
+                continue;
+            else
+            {
+                if (isChild(motherSibling, person2))
+                    ;
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+

@@ -114,6 +114,8 @@ void startMenu()
         case 7:
             printf("Exiting\n");
             break;
+        case 8:
+            
         default:
             printf("Invalid choice\n");
             break;
