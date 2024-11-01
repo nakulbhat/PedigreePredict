@@ -28,6 +28,8 @@ Person *findPersonById(int id)
     personListNode *current = personListHead;
     while (current != NULL)
     {
+        printf("inwhile");
+        displayPerson(current->person);
         if (current->person->id == id)
             return current->person;
         else

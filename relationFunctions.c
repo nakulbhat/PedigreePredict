@@ -113,4 +113,26 @@ int isCousin(Person *person1, Person *person2)
     return 0;
 }
 
+int isPartner(Person *person1, Person *person2)
+{
+    return findRelationById(person1->id, person2->id) != NULL;
+}
 
+int getRelationType(Person *person1, Person *person2)
+{
+    if (isChild(person1, person2) || isChild(person2, person1))
+    {
+        return 1;
+    }
+    else if (isSibling(person1, person2))
+    {
+        return 2;
+    }
+    else if (isPartner(person1, person2)){
+        return 3;
+    }
+    else if (isCousin(person1, person2)){
+        return 4;
+    }
+    else return 0;
+}
