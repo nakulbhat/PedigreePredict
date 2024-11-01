@@ -61,27 +61,31 @@ Relation *findRelationById(int fatherid, int motherid)
     }
     return NULL;
 }
-
-int isSibling(Person *person1, Person *person2)
-{
-    return (person1->relationOfOrigin == person2->relationOfOrigin);
-}
-
 int siblingExists(Person *person)
 {
     return (person->nextSibling != NULL || person->prevSibling != NULL);
 }
 
+int isSibling(Person *person1, Person *person2)
+{
+    if (siblingExists(person1) && siblingExists(person2))
+        return (person1->relationOfOrigin == person2->relationOfOrigin);
+    else
+    return 0;
+}
+
 int isChild(Person *parent, Person *child)
 {
-    return (child->relationOfOrigin->male == parent || child->relationOfOrigin->female == parent);
+    if (child->relationOfOrigin == NULL)
+        return 0;
+    else return (child->relationOfOrigin->male == parent || child->relationOfOrigin->female == parent);
 }
 
 int isCousin(Person *person1, Person *person2)
 {
     Person *fatherSibling = NULL;
     Person *motherSibling = NULL;
-    if (siblingExists(person1->relationOfOrigin->male))
+    if (person1->relationOfOrigin && siblingExists( person1->relationOfOrigin->male))
     {
         fatherSibling = person1->relationOfOrigin->male->relationOfOrigin->firstChild;
         while (fatherSibling)
@@ -95,7 +99,7 @@ int isCousin(Person *person1, Person *person2)
             }
         }
     }
-    if (siblingExists(person1->relationOfOrigin->female))
+    if (person1->relationOfOrigin && siblingExists(person1->relationOfOrigin->female))
     {
         motherSibling = person1->relationOfOrigin->female->relationOfOrigin->firstChild;
         while (motherSibling)
@@ -120,19 +124,29 @@ int isPartner(Person *person1, Person *person2)
 
 int getRelationType(Person *person1, Person *person2)
 {
+    printf("infn");
     if (isChild(person1, person2) || isChild(person2, person1))
     {
+        printf("isChild");
         return 1;
     }
-    else if (isSibling(person1, person2))
+    printf("r\t");
+    if (isSibling(person1, person2))
     {
+        printf("isSib");
         return 2;
     }
-    else if (isPartner(person1, person2)){
+    printf("r\t");
+    if (isPartner(person1, person2))
+    {
+        printf("ispart");
         return 3;
     }
-    else if (isCousin(person1, person2)){
+    printf("r\t");
+    if (isCousin(person1, person2))
+    {
+        printf("isCous");
         return 4;
     }
-    else return 0;
+            return 0;
 }
