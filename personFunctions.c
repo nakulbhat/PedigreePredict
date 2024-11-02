@@ -11,10 +11,17 @@
 #ifndef RELATION_FUNCTIONS_INCLUDED
 #include "relationFunctions.c"
 #endif
+#ifndef INPUT_FUNCTIONS_INCLUDED
+#include "inputFunctions.c"
+#endif
+#ifndef DISPLAY_FUNCTIONS_INCLUDED
+#include "displayFunctions.c"
+#endif
+#ifndef MENU_INCLUDED
+#include "menu.c"
+#endif
 
 #include "functionList.h"
-
-personListNode *personListHead = NULL;
 
 int generateID()
 {
@@ -23,32 +30,38 @@ int generateID()
     return count;
 }
 
+personListNode **getPersonListHead()
+{
+    static personListNode *personListHead = NULL;
+    return &personListHead;
+}
+
 Person *findPersonById(int id)
 {
-    personListNode *current = personListHead;
+    personListNode *current = *getPersonListHead();
     while (current != NULL)
     {
         if (current->person->id == id)
-            return current->person;
+            {return current->person;}
         else
-            current = current->next;
+            {current = current->next;}
     }
     return NULL;
 }
 
 void addPersonToList(Person *person)
 {
+    personListNode **head = getPersonListHead();
     personListNode *newNode = (personListNode *)malloc(sizeof(personListNode));
     newNode->person = person;
     newNode->next = NULL;
-
-    if (personListHead == NULL)
+    if (*head == NULL)
     {
-        personListHead = newNode;
+        *head = newNode;
     }
     else
     {
-        personListNode *current = personListHead;
+        personListNode *current = *head;
         while (current->next != NULL)
         {
             current = current->next;
@@ -57,88 +70,25 @@ void addPersonToList(Person *person)
     }
 }
 
-double *normaliseProbabilities(double *probabilities)
-{
-    double total = 0;
-    for (int i = 0; i < ARRAY_SIZE; i++)
-    {
-        total += probabilities[i];
-    }
-    for (int i = 0; i < ARRAY_SIZE; i++)
-    {
-        probabilities[i] /= total;
-    }
-    return probabilities;
-}
-
-double *calculateProbabilities(double *a, double *b)
-{
-    double *probabilities = (double *)malloc(sizeof(double) * ARRAY_SIZE);
-    probabilities[0] = ((a[0] * (4 * b[0] + 2 * b[1]) + a[1] * (2 * b[0] + 2 * b[1])) / 4);
-    probabilities[1] = ((a[0] * (2 * b[1] + 4 * b[2]) + a[1] * (2 * (b[0] + b[1] + b[2])) + a[2] * (4 * b[0] + 2 * b[1])) / 4);
-    probabilities[2] = ((a[1] * (b[1] + 2 * b[2]) + a[2] * (2 * b[1] + 4 * b[2])) / 4);
-
-    return probabilities;
-}
-
-double *getProbabilities(Relation *relOfOrg, int bypassCharacReading)
-{
-    int choice = 0;
-    if (bypassCharacReading == 0)
-    {
-        printf("Do you want to enter characteristics of the person?\n");
-        printf("1. Yes\n");
-        printf("2. No\n");
-        scanf("%d", &choice);
-    }
-    if (choice == 1)
-    {
-        double *probabilities = (double *)malloc(sizeof(double) * ARRAY_SIZE);
-        printf("Enter probabilities of the person having the following characteristics\n");
-        for (int i = 0; i < ARRAY_SIZE; i++)
-        {
-            printf("Enter probability of characteristic %d\n", i + 1);
-            scanf("%lf", &probabilities[i]);
-        }
-        return normaliseProbabilities(probabilities);
-    }
-    else if (relOfOrg == NULL)
-    {
-        double *probabilities = (double *)malloc(sizeof(double) * ARRAY_SIZE);
-        for (int i = 0; i < ARRAY_SIZE; i++)
-        {
-            probabilities[i] = 0.333;
-        }
-        return normaliseProbabilities(probabilities);
-    }
-    else
-    {
-        return normaliseProbabilities(calculateProbabilities(relOfOrg->male->characteristics, relOfOrg->female->characteristics));
-    }
-}
-
-Person *createPerson(Relation *relOfOrg, gender gender, char name[], int bypassCharacReading)
+Person *createPerson(Relation *relOfOrg, gender gender, char name[], bool bypassCharacteristicReading)
 {
     Person *newPerson = (Person *)malloc(sizeof(Person));
     newPerson->relationOfOrigin = relOfOrg;
     newPerson->id = generateID();
     strcpy(newPerson->name, name);
     newPerson->gender = gender;
-    double *newPersonCharacteristics = getProbabilities(relOfOrg, bypassCharacReading);
+    double *newPersonCharacteristics = getProbabilities(relOfOrg, bypassCharacteristicReading);
     memcpy(newPerson->characteristics, newPersonCharacteristics, sizeof(newPerson->characteristics));
     addPersonToList(newPerson);
     return newPerson;
 }
 
-Person *addChild(Relation *relOfOrg, gender gen, char name[], int bypassCharacReading)
+Person *addChild(Relation *relOfOrg, gender gen, char name[], bool bypassCharacteristicReading)
 {
-    Person *newPerson = createPerson(relOfOrg, gen, name, bypassCharacReading);
-
+    Person *newPerson = createPerson(relOfOrg, gen, name, bypassCharacteristicReading);
     Person *kid = relOfOrg->firstChild;
-
     if (kid == NULL)
-        relOfOrg->firstChild = newPerson; // if no kids yet, then add as first kid
-    // iterate until a kid has no nextSibling
+        relOfOrg->firstChild = newPerson;
     else
     {
         while (kid->nextSibling)
@@ -149,40 +99,3 @@ Person *addChild(Relation *relOfOrg, gender gen, char name[], int bypassCharacRe
     return newPerson;
 }
 
-void readPersonAndParents()
-{
-    int mode;
-    printf("Enter mode\n");
-    printf("1. Read from one-line\n");
-    printf("2. Read from user input\n");
-    scanf("%d", &mode);
-    char name[MAX_NAME_LENGTH];
-    int gen, fatherID, motherID;
-    if (mode == 1)
-    {
-        printf("Enter Details of Patient in one-line. Use tab to separate entries.");
-        printf("\nName\tisMale\tFatherID\tMotherID\n");
-        scanf("%s\t%d\t%d\t%d", name, &gen, &fatherID, &motherID);
-    }
-    else if (mode == 2)
-    {
-        printf("Enter name of the person\n");
-        scanf("%s", name);
-        printf("Choose gender\n");
-        printf("1. Male\n");
-        printf("2. Female\n");
-        scanf("%d", &gen);
-        printf("Enter ID of father\n");
-        scanf("%d", &fatherID);
-        printf("Enter ID of mother\n");
-        scanf("%d", &motherID);
-    }
-    Person *father = findPersonById(fatherID);
-    Person *mother = findPersonById(motherID);
-    Relation *marriage = findRelationById(fatherID, motherID);
-    if (marriage == NULL)
-    {
-        marriage = addRelation(father, mother);
-    }
-    addChild(marriage, gen == 1 ? MALE : FEMALE, name, 0);
-}
