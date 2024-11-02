@@ -1,17 +1,4 @@
-
-#define RELATION_FUNCTIONS_INCLUDED 1
-
-#ifndef STRUCTS_INCLUDED
-#include "structs.c"
-#endif
-#ifndef PERSON_FUNCTIONS_INCLUDED
-#include "personFunctions.c"
-#endif
-#ifndef RELATION_FUNCTIONS_INCLUDED
-#include "relationFunctions.c"
-#endif
-
-#include "functionList.h"
+#include "../include/personFunctions.h"
 
 Relation *createRelation(Person *male, Person *female)
 {
@@ -24,12 +11,13 @@ Relation *createRelation(Person *male, Person *female)
 Relation *addRelation(Person *male, Person *female)
 {
     Relation *newRelation = createRelation(male, female);
-
     if (male->firstRelation != NULL)
     {
         Relation *currentRelationMale = male->firstRelation;
         while (currentRelationMale->maleNextRelation)
+        {
             currentRelationMale = currentRelationMale->maleNextRelation;
+        }
         currentRelationMale->maleNextRelation = newRelation;
     }
     else
@@ -39,64 +27,84 @@ Relation *addRelation(Person *male, Person *female)
     {
         Relation *currentRelationFemale = female->firstRelation;
         while (currentRelationFemale->femaleNextRelation)
+        {
             currentRelationFemale = currentRelationFemale->femaleNextRelation;
+        }
         currentRelationFemale->femaleNextRelation = newRelation;
     }
     else
+    {
         female->firstRelation = newRelation;
+    }
     return newRelation;
 }
 
-Relation *findRelationById(int fatherid, int motherid)
+Relation *findRelationById(int maleId, int femaleId)
 {
-    Person *father = findPersonById(fatherid);
-    Person *mother = findPersonById(motherid);
-    Relation *currentRelation = father->firstRelation;
-    while (currentRelation)
+    Person *male = findPersonById(maleId);
+    Person *female = findPersonById(femaleId);
+    Relation *maleRelations = male->firstRelation;
+    while (maleRelations)
     {
-        if (currentRelation->female == mother)
-            return currentRelation;
+        if (maleRelations->female == female)
+        {
+            return maleRelations;
+        }
         else
-            currentRelation = currentRelation->maleNextRelation;
+            maleRelations = maleRelations->maleNextRelation;
     }
     return NULL;
 }
-int siblingExists(Person *person)
+bool siblingExists(Person *person)
 {
     return (person->nextSibling != NULL || person->prevSibling != NULL);
 }
 
-int isSibling(Person *person1, Person *person2)
+bool isSibling(Person *person1, Person *person2)
 {
     if (siblingExists(person1) && siblingExists(person2))
+    {
         return (person1->relationOfOrigin == person2->relationOfOrigin);
+    }
     else
-    return 0;
+    {
+        return false;
+    }
 }
 
-int isChild(Person *parent, Person *child)
+bool isChild(Person *parent, Person *child)
 {
     if (child->relationOfOrigin == NULL)
-        return 0;
-    else return (child->relationOfOrigin->male == parent || child->relationOfOrigin->female == parent);
+    {
+        return false;
+    }
+    else
+    {
+        return (child->relationOfOrigin->male == parent || child->relationOfOrigin->female == parent);
+    }
 }
 
-int isCousin(Person *person1, Person *person2)
+bool isCousin(Person *person1, Person *person2)
 {
     Person *fatherSibling = NULL;
     Person *motherSibling = NULL;
-    if (person1->relationOfOrigin && siblingExists( person1->relationOfOrigin->male))
+    if (person1->relationOfOrigin && siblingExists(person1->relationOfOrigin->male))
     {
         fatherSibling = person1->relationOfOrigin->male->relationOfOrigin->firstChild;
         while (fatherSibling)
         {
             if (fatherSibling == person1->relationOfOrigin->male)
+            {
                 continue;
+            }
             else
             {
                 if (isChild(fatherSibling, person2))
-                    return 1;
+                {
+                    return true;
+                }
             }
+            fatherSibling = fatherSibling->nextSibling;
         }
     }
     if (person1->relationOfOrigin && siblingExists(person1->relationOfOrigin->female))
@@ -105,48 +113,47 @@ int isCousin(Person *person1, Person *person2)
         while (motherSibling)
         {
             if (motherSibling == person1->relationOfOrigin->female)
+            {
                 continue;
+            }
             else
             {
                 if (isChild(motherSibling, person2))
-                    ;
-                return 1;
+                {
+                    return true;
+                }
             }
+            motherSibling = motherSibling->nextSibling;
         }
     }
-    return 0;
+    return false;
 }
 
-int isPartner(Person *person1, Person *person2)
+bool isPartner(Person *person1, Person *person2)
 {
-    return findRelationById(person1->id, person2->id) != NULL;
+    return (findRelationById(person1->id, person2->id) != NULL);
 }
 
 int getRelationType(Person *person1, Person *person2)
 {
-    printf("infn");
     if (isChild(person1, person2) || isChild(person2, person1))
     {
-        printf("isChild");
         return 1;
     }
-    printf("r\t");
-    if (isSibling(person1, person2))
+    else if (isSibling(person1, person2))
     {
-        printf("isSib");
         return 2;
     }
-    printf("r\t");
-    if (isPartner(person1, person2))
+    else if (isPartner(person1, person2))
     {
-        printf("ispart");
         return 3;
     }
-    printf("r\t");
-    if (isCousin(person1, person2))
+    else if (isCousin(person1, person2))
     {
-        printf("isCous");
         return 4;
     }
-            return 0;
+    else
+    {
+        return 0;
+    }
 }

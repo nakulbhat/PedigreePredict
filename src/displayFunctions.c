@@ -1,18 +1,5 @@
-
-#define DISPLAY_FUNCTIONS_INCLUDED 1
-
-#ifndef STRUCTS_INCLUDED
-#include "structs.c"
-#endif
-#ifndef PERSON_FUNCTIONS_INCLUDED
-#include "personFunctions.c"
-#endif
-#ifndef RELATION_FUNCTIONS_INCLUDED
-#include "relationFunctions.c"
-#endif
-
-#include "functionList.h"
-
+#include "../include/personFunctions.h"
+#include "../include/relationFunctions.h"
 
 void displayPerson(Person *person)
 {
@@ -22,7 +9,6 @@ void displayPerson(Person *person)
         printf("Person is NULL\n");
         return;
     }
-
     printf("ID: %d\n", person->id);
     printf("Name: %s\n", person->name);
     printf("Gender: %s\n", person->gender == MALE ? "Male" : "Female");
@@ -32,7 +18,6 @@ void displayPerson(Person *person)
         printf("%2f ", person->characteristics[i]);
     }
     printf("\n");
-
     if (person->relationOfOrigin != NULL)
     {
         char *father = person->relationOfOrigin->male->name;
@@ -52,7 +37,6 @@ void displayPerson(Person *person)
     {
         printf("Previous Sibling: NULL\n");
     }
-
     if (person->nextSibling != NULL)
     {
         printf("Next Sibling: %s\n", person->nextSibling->name);
@@ -61,7 +45,6 @@ void displayPerson(Person *person)
     {
         printf("Next Sibling: NULL\n");
     }
-
     if (person->firstRelation != NULL)
     {
         char *spouse;
@@ -106,9 +89,13 @@ void displayChildren(Person *person)
                 child = child->nextSibling;
             }
             if (person->gender == MALE)
+            {
                 rels = rels->maleNextRelation;
+            }
             else
+            {
                 rels = rels->femaleNextRelation;
+            }
         }
     }
     else
@@ -136,10 +123,6 @@ void displayCousins(Person *person)
         {
             displayChildren(motherSiblings);
         }
-        else
-        {
-            printf("Traced to mom");
-        }
         motherSiblings = motherSiblings->nextSibling;
     }
 
@@ -148,10 +131,6 @@ void displayCousins(Person *person)
         if (fatherSiblings != father)
         {
             displayChildren(fatherSiblings);
-        }
-        else
-        {
-            printf("Traced to dad");
         }
         fatherSiblings = fatherSiblings->nextSibling;
     }
@@ -165,13 +144,13 @@ void displayPersonBrief(Person *person)
 
 void displayPersonList()
 {
-    personListNode *current = personListHead;
+    personListNode *current = *getPersonListHead();
     while (current != NULL)
     {
         displayPersonBrief(current->person);
         current = current->next;
     }
-    if (!personListHead)
+    if (!*getPersonListHead())
         printf("No persons have been created\n");
 }
 

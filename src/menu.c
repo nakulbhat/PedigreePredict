@@ -1,22 +1,7 @@
-#define MENU_INCLUDED 1
-
-#ifndef STRUCTS_INCLUDED
-#include "structs.c"
-#endif
-#ifndef PERSON_FUNCTIONS_INCLUDED
-#include "personFunctions.c"
-#endif
-#ifndef RELATION_FUNCTIONS_INCLUDED
-#include "relationFunctions.c"
-#endif
-#ifndef DISPLAY_FUNCTIONS_INCLUDED
-#include "displayFunctions.c"
-#endif
-#ifndef MENU_INCLUDED
-#include "menu.c"
-#endif
-
-#include "functionList.h"
+#include "../include/relationFunctions.h"
+#include "../include/inputFunctions.h"
+#include "../include/displayFunctions.h"
+#include "../include/personFunctions.h"
 
 
 void usePredefinedPedigree()
@@ -29,7 +14,6 @@ void usePredefinedPedigree()
     Relation *paternalMarriage = addRelation(paternalGrandfather, paternalGrandmother);
     Relation *maternalMarriage = addRelation(maternalGrandfather, maternalGrandmother);
 
-    // Parents and their siblings
     Person *father = addChild(paternalMarriage, MALE, "Father", 1);
     Person *fatherYoungerSister = addChild(paternalMarriage, FEMALE, "FatherYoungerSister", 1);
     Person *motherOlderBrother = addChild(maternalMarriage, MALE, "MotherOlderBrother", 1);
@@ -37,7 +21,6 @@ void usePredefinedPedigree()
     Person *fatherYoungerBrother = addChild(paternalMarriage, MALE, "FatherYoungerBrother", 1);
     Person *mother = addChild(maternalMarriage, FEMALE, "Mother", 1);
 
-    // aunts and uncles
     Person *fatherYoungerSisterHusband = createPerson(NULL, MALE, "FatherYoungerSisterHusband", 1);
     Person *motherOlderBrotherWife = createPerson(NULL, FEMALE, "MotherOlderBrotherWife", 1);
     Person *motherOlderSisterHusband = createPerson(NULL, MALE, "MotherOlderSisterHusband", 1);
@@ -49,19 +32,16 @@ void usePredefinedPedigree()
     Relation *motherOlderSisterMarriage = addRelation(motherOlderSisterHusband, motherOlderSister);
     Relation *fatherYoungerBrotherMarriage = addRelation(fatherYoungerBrotherWife, fatherYoungerBrother);
 
-    // Children
     Person *child1 = addChild(parentsMarriage, MALE, "Child1", 1);
     Person *child2 = addChild(parentsMarriage, FEMALE, "Child2", 1);
     Person *child3 = addChild(parentsMarriage, MALE, "Child3", 1);
     Person *child4 = addChild(parentsMarriage, FEMALE, "Child4", 1);
 
-    // Cousins from father's side
     Person *cousin1 = addChild(fatherYoungerSisterMarriage, MALE, "Cousin1", 1);
     Person *cousin2 = addChild(fatherYoungerSisterMarriage, FEMALE, "Cousin2", 1);
     Person *cousin3 = addChild(fatherYoungerBrotherMarriage, MALE, "Cousin3", 1);
     Person *cousin4 = addChild(fatherYoungerBrotherMarriage, FEMALE, "Cousin4", 1);
 
-    // Cousins from mother's side
     Person *cousin5 = addChild(motherOlderBrotherMarriage, MALE, "Cousin5", 1);
     Person *cousin6 = addChild(motherOlderBrotherMarriage, FEMALE, "Cousin6", 1);
     Person *cousin7 = addChild(motherOlderSisterMarriage, MALE, "Cousin7", 1);
@@ -113,9 +93,7 @@ void startMenu()
             break;
         case 7:
             printf("Exiting\n");
-            break;
-        case 8:
-            
+            break;  
         default:
             printf("Invalid choice\n");
             break;
