@@ -3,6 +3,7 @@
 
 #include "structs.h"
 
+void clearInputBuffer();
 double *normaliseProbabilities(double *probabilities);
 double *calculateCharacteristicProbabilities(double *a, double *b);
 double *getProbabilities(Relation *relOfOrg, bool bypassCharacteristicReading);

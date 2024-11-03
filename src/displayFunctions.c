@@ -1,5 +1,10 @@
 #include "../include/personFunctions.h"
 #include "../include/relationFunctions.h"
+#include "../include/displayFunctions.h"
+
+void clearScreen() {
+    system(CLEAR_COMMAND);
+}
 
 void displayPerson(Person *person)
 {
