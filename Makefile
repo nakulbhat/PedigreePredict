@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -g -I./include  # Add include folder to search path
+CFLAGS = -g -I./include  # Add include folder to search path
 
 # Directories
 SRCDIR = src
@@ -13,7 +13,7 @@ OBJS = $(OBJDIR)/main.o $(OBJDIR)/displayFunctions.o $(OBJDIR)/personFunctions.o
 		$(OBJDIR)/relationFunctions.o $(OBJDIR)/inputFunctions.o $(OBJDIR)/menu.o
 
 # Target executables
-TARGET = myProgram
+TARGET = PedigereePredict
 TEST_TARGET = testProgram  # Test executable name
 
 # Rule to build the main program executable
