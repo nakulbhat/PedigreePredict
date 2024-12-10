@@ -56,7 +56,6 @@ void startMenu()
     int intChoice, personID;
     do
     {
-        clearScreen();
         printf("\n\n****Menu*****\n");
         printf("Enter your choice \n");
         printf("1. Use Predefined Pedigree\n");
@@ -70,6 +69,7 @@ void startMenu()
         {
             printf("Invalid input. Please enter a valid choice.\n");
             clearInputBuffer(); // clear input if scanf fails
+            clearScreen();
             continue;
         }
         intChoice = choice - 48;
@@ -80,6 +80,7 @@ void startMenu()
             break;
         case 2:
             readPersonAndParents();
+            clearScreen();
             break;
         case 3:
             printf("Enter the id of the person to display\n");
