@@ -3,7 +3,6 @@
 #include "../include/displayFunctions.h"
 #include "../include/personFunctions.h"
 
-
 void usePredefinedPedigree()
 {
     Person *paternalGrandfather = createPerson(NULL, MALE, "Paternal Grandfather", 1);
@@ -53,8 +52,10 @@ void usePredefinedPedigree()
 void startMenu()
 {
     printf("Welcome to the Pedigree Program\n");
-    int choice, personID;
-    do{
+    char choice;
+    int intChoice, personID;
+    do
+    {
         printf("\n\n****Menu*****\n");
         printf("Enter your choice \n");
         printf("1. Use Predefined Pedigree\n");
@@ -64,14 +65,22 @@ void startMenu()
         printf("5. Display Cousins\n");
         printf("6. Display All Persons\n");
         printf("7. Exit\n");
-        scanf("%d", &choice);
-        switch (choice)
+        if (scanf(" %c", &choice) != 1)
+        {
+            printf("Invalid input. Please enter a valid choice.\n");
+            clearInputBuffer(); // clear input if scanf fails
+            clearScreen();
+            continue;
+        }
+        intChoice = choice - 48;
+        switch (intChoice)
         {
         case 1:
             usePredefinedPedigree();
             break;
         case 2:
             readPersonAndParents();
+            clearScreen();
             break;
         case 3:
             printf("Enter the id of the person to display\n");
@@ -93,10 +102,10 @@ void startMenu()
             break;
         case 7:
             printf("Exiting\n");
-            break;  
+            break;
         default:
             printf("Invalid choice\n");
             break;
         }
-    }while (choice != 7);    
+    } while (intChoice != 7);
 }

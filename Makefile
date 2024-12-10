@@ -13,7 +13,7 @@ OBJS = $(OBJDIR)/main.o $(OBJDIR)/displayFunctions.o $(OBJDIR)/personFunctions.o
 		$(OBJDIR)/relationFunctions.o $(OBJDIR)/inputFunctions.o $(OBJDIR)/menu.o
 
 # Target executables
-TARGET = PedigereePredict
+TARGET = PedigreePredict
 TEST_TARGET = testProgram  # Test executable name
 
 # Rule to build the main program executable
@@ -34,3 +34,6 @@ test: $(filter-out $(OBJDIR)/main.o, $(OBJS)) $(TESTDIR)/tests.c
 # Clean up build files
 clean:
 	rm -rf $(OBJDIR) $(TARGET) $(TEST_TARGET)
+
+run:
+	./$(TARGET)

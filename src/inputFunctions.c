@@ -5,7 +5,12 @@
 #include "../include/displayFunctions.h"
 #include "../include/menu.h"
 
-
+void clearInputBuffer()
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+        ; // clear the input buffer
+}
 
 double *normaliseProbabilities(double *probabilitiesArray)
 {
@@ -80,7 +85,23 @@ void readPersonAndParents()
     {
         printf("Enter Details of Patient in one-line. Use tab to separate entries.");
         printf("\nName\tisMale\tFatherID\tMotherID\n");
-        scanf("%s\t%d\t%d\t%d", name, &gen, &fatherID, &motherID);
+        clearInputBuffer();
+        char input[256];
+        if (fgets(input, sizeof(input), stdin) != NULL)
+        {
+            if (sscanf(input, "%[^\t]\t%d\t%d\t%d", name, &gen, &fatherID, &motherID) == 4)
+            {
+                printf("Input sucessfully parsed.\n");
+            }
+            else
+            {
+                printf("Invalid input format.\n");
+            }
+        }
+        else
+        {
+            printf("Error reading input.\n");
+        }
     }
     else if (mode == 2)
     {
@@ -104,4 +125,3 @@ void readPersonAndParents()
     }
     addChild(marriage, gen == 1 ? MALE : FEMALE, name, 0);
 }
-
